@@ -4,7 +4,17 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  strict: process.env.NODE_ENV !== "production",
+  state: {
+    content: ""
+  },
+  mutations: {
+    updateContent(state, content) {
+      state.content = content;
+    },
+    clearContent(state) {
+      state.content = "";
+    }
+  },
   actions: {}
 });
