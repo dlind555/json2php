@@ -27,6 +27,13 @@ export default new Vuex.Store({
           return "Content is a JSON object/array";
         }
       }
+    },
+    canConvert(state, getters) {
+      return (
+        !getters.contentHasErrors &&
+        state.contentIsJson &&
+        !state.contentIsJsonValue
+      );
     }
   },
   mutations: {
