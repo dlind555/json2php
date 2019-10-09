@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     updateContent($event) {
-      this.$store.commit("updateContent", $event.target.value);
+      this.$store.dispatch("updateContent", $event.target.value);
     }
   }
 };

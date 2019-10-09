@@ -12,7 +12,7 @@ export default {
   name: "ButtonClear",
   methods: {
     clearContent() {
-      this.$store.commit("clearContent");
+      this.$store.dispatch("clearContent");
     }
   }
 };
