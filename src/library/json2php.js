@@ -8,6 +8,16 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
   const newLine = function() {
     return compact ? "" : "\n";
   };
+  const wrapObjectOrArray = function(items) {
+    return (
+      "[" +
+      newLine() +
+      items.join(comma() + newLine()) +
+      newLine() +
+      whitespace(nestingLevel) +
+      "]"
+    );
+  };
   let result;
   switch (Object.prototype.toString.call(item)) {
     case "[object Null]":
@@ -20,10 +30,18 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
       result = item.toString();
       break;
     case "[object Array]":
+      result = [];
+      for (let i in item) {
+        result.push(
+          whitespace(nestingLevel + 1) +
+            json2php(item[i], compact, nestingLevel + 1)
+        );
+      }
+      result = wrapObjectOrArray(result);
+      break;
     case "[object Object]":
       result = [];
       for (let i in item) {
-        // add the key if we're iterating over an object
         if (item.hasOwnProperty(i)) {
           result.push(
             whitespace(nestingLevel + 1) +
@@ -32,20 +50,9 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
               '" => ' +
               json2php(item[i], compact, nestingLevel + 1)
           );
-        } else {
-          result.push(
-            whitespace(nestingLevel + 1) +
-              json2php(item[i], compact, nestingLevel + 1)
-          );
         }
       }
-      result =
-        "[" +
-        newLine() +
-        result.join(comma() + newLine()) +
-        newLine() +
-        whitespace(nestingLevel) +
-        "]";
+      result = wrapObjectOrArray(result);
       break;
   }
   return result;
