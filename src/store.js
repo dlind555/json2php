@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     content: "",
     error: "",
+    message: "",
     contentIsJson: false,
     contentIsJsonValue: false
   },
@@ -16,7 +17,9 @@ export default new Vuex.Store({
       return state.error !== "";
     },
     statusMessage(state, getters) {
-      if (getters.contentHasErrors) {
+      if (state.message !== "") {
+        return state.message;
+      } else if (getters.contentHasErrors) {
         return state.error;
       } else {
         if (state.content === "") {
@@ -48,11 +51,15 @@ export default new Vuex.Store({
     },
     setError(state, error) {
       state.error = error;
+    },
+    setMessage(state, message) {
+      state.message = message;
     }
   },
   actions: {
     updateContent({ commit }, content) {
       commit("setContent", content);
+      commit("setMessage", "");
       if (content === "") {
         commit("setError", "");
         commit("setJsonFlag", false);
@@ -76,6 +83,12 @@ export default new Vuex.Store({
     },
     clearContent({ dispatch }) {
       dispatch("updateContent", "");
+    },
+    resetContent({ commit }, data) {
+      commit("setContent", data.content);
+      commit("setMessage", data.message);
+      commit("setError", "");
+      commit("setJsonFlag", false);
     }
   }
 });
