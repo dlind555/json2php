@@ -23,6 +23,9 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
     case "[object Null]":
       result = "null";
       break;
+    case "[object Boolean]":
+      result = item.toString();
+      break;
     case "[object String]":
       result = '"' + item + '"';
       break;
