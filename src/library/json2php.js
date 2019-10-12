@@ -9,14 +9,14 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
     return compact ? "" : "\n";
   };
   const wrapObjectOrArray = function(items) {
-    return (
-      "[" +
-      newLine() +
-      items.join(comma() + newLine()) +
-      newLine() +
-      whitespace(nestingLevel) +
-      "]"
-    );
+    return items.length > 0
+      ? "[" +
+          newLine() +
+          items.join(comma() + newLine()) +
+          newLine() +
+          whitespace(nestingLevel) +
+          "]"
+      : "[]";
   };
   const escapeString = function(string) {
     /*eslint-disable no-control-regex*/

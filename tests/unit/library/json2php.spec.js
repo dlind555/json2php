@@ -119,12 +119,12 @@ describe("JsonToPhp", () => {
 
   it("Converts empty array", () => {
     let input = "[]";
-    expect(json2php(JSON.parse(input))).toBe("[\n\n]");
+    expect(json2php(JSON.parse(input))).toBe("[]");
   });
 
   it("Converts empty object", () => {
     let input = "{}";
-    expect(json2php(JSON.parse(input))).toBe("[\n\n]");
+    expect(json2php(JSON.parse(input))).toBe("[]");
   });
 
   it("Converts simple array", () => {
