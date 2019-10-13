@@ -27,6 +27,8 @@ export const getters = {
         return "Content is a JSON value";
       } else if (state.contentIsJson) {
         return "Content is a JSON object/array";
+      } else {
+        return 'Internal state error';
       }
     }
   },
