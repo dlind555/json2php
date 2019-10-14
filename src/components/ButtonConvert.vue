@@ -32,8 +32,6 @@ export default {
   },
   methods: {
     convert() {
-      // todo - implement a separate decoding function which preserves the order of the keys
-      // to fully replicate PHP's json_decode functionality
       let decoded = jsonParseOrdered(this.content);
       let phpString = convertJsonToPhp(decoded);
       this.$store.dispatch("resetContent", {
