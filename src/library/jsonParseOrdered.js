@@ -333,7 +333,7 @@ const jsonParseOrdered = function(text) {
         return results;
       } else if (value == "{") {
         // Parses a JSON object, returning a new JavaScript object.
-        results = {};
+        results = new Map();
         for (;;) {
           value = lex();
           // A closing curly brace marks the end of the object literal.
@@ -367,7 +367,7 @@ const jsonParseOrdered = function(text) {
           ) {
             abort();
           }
-          results[value.slice(1)] = get(lex());
+          results.set(value.slice(1), get(lex()));
         }
         return results;
       }
