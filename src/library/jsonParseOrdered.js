@@ -29,28 +29,6 @@ SOFTWARE.
 const jsonParseOrdered = function(text) {
   /*! JSON v3.3.2 | https://bestiejs.github.io/json3 | Copyright 2012-2015, Kit Cambridge, Benjamin Tan | http://kit.mit-license.org */
 
-  // Internal: Determines whether the native `JSON.stringify` and `parse`
-  // implementations are spec-compliant. Based on work by Ken Snyder.
-  function has(name) {
-    if (has[name] != null) {
-      // Return cached feature test result.
-      return has[name];
-    }
-    var isSupported;
-    if (name == "bug-string-char-index") {
-      // IE <= 7 doesn't support accessing string characters using square
-      // bracket notation. IE 8 only supports this for primitives.
-      isSupported = "a"[0] != "a";
-    }
-    return (has[name] = !!isSupported);
-  }
-  has["bug-string-char-index"] = has["date-serialization"] = has["json"] = has[
-    "json-stringify"
-  ] = has["json-parse"] = null;
-
-  // Detect incomplete support for accessing string characters by index.
-  var charIndexBuggy = has("bug-string-char-index");
-
   // Public: Parses a JSON source string.
   var fromCharCode = String.fromCharCode;
 
@@ -106,7 +84,7 @@ const jsonParseOrdered = function(text) {
         case 44:
           // Parse a punctuator token (`{`, `}`, `[`, `]`, `:`, or `,`) at
           // the current position.
-          value = charIndexBuggy ? source.charAt(Index) : source[Index];
+          value = source[Index];
           Index++;
           return value;
         case 34:
@@ -188,7 +166,7 @@ const jsonParseOrdered = function(text) {
           }
           // Unterminated string.
           abort();
-          break;
+        // eslint-disable-next-line
         default:
           // Parse numbers and literals.
           begin = Index;
@@ -293,7 +271,7 @@ const jsonParseOrdered = function(text) {
       abort();
     }
     if (typeof value == "string") {
-      if ((charIndexBuggy ? value.charAt(0) : value[0]) == "@") {
+      if (value[0] == "@") {
         // Remove the sentinel `@` character.
         return value.slice(1);
       }
@@ -362,7 +340,7 @@ const jsonParseOrdered = function(text) {
           if (
             value == "," ||
             typeof value != "string" ||
-            (charIndexBuggy ? value.charAt(0) : value[0]) != "@" ||
+            value[0] != "@" ||
             lex() != ":"
           ) {
             abort();
