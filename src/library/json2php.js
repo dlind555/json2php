@@ -66,6 +66,19 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
       }
       result = wrapObjectOrArray(result);
       break;
+    case "[object Map]":
+      result = [];
+      item.forEach(function(value, key) {
+        result.push(
+          whitespace(nestingLevel + 1) +
+            '"' +
+            escapeString(key) +
+            '" => ' +
+            json2php(value, compact, nestingLevel + 1)
+        );
+      });
+      result = wrapObjectOrArray(result);
+      break;
   }
   return result;
 };

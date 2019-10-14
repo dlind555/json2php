@@ -151,4 +151,18 @@ describe("JsonToPhp", () => {
         '[\n\t\t\t\t\t"four" => "five"\n\t\t\t\t]\n\t\t\t]\n\t\t]\n\t]\n]'
     );
   });
+
+  it("Doesn't preserve the object elements order when using the standard JSON.parse function", () => {
+    let input = '{"5":"1", "4":"2", "2":"3", "1":"4", "3":"5"}';
+    expect(json2php(JSON.parse(input), true)).toBe(
+      '["1" => "4","2" => "3","3" => "5","4" => "2","5" => "1"]'
+    );
+  });
+
+  it("Preserves the object elements order when using jsonParseOrdered function", () => {
+    let input = '{"5":"1", "4":"2", "2":"3", "1":"4", "3":"5"}';
+    expect(json2php(jsonParseOrdered(input), true)).toBe(
+      '["5" => "1","4" => "2","2" => "3","1" => "4","3" => "5"]'
+    );
+  });
 });
