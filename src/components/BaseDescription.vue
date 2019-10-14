@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h2 class="text-2xl">JSON to PHP Array encoder / decoder</h2>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    <h2 class="text-3xl">JSON to PHP Array encoder / decoder</h2>
+    <p class="text-xl">
+      A free online tool to validate and convert JSON to PHP array ready to be
+      put into a file.<br />
+      All processing is done locally and no data is being sent to the server.<br />
+      The order of the elements in JSON objects is preserved, same as with the
+      PHP json_decode() function.
+    </p>
   </div>
 </template>
 
