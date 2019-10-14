@@ -1,34 +1,31 @@
 # json2php
 
+## About
+Json2Php is a VueJS application which simulates the json_decode PHP function for converting JSON data to PHP arrays, all in the browser, without any need for calling a server API.
+
+It even preserves the order of the elements in JSON objects!
+
 ## Project setup
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### Development
 ```
-yarn run serve
-```
-
-### Compiles and minifies for production
-```
-yarn run build
+yarn serve
+yarn test:unit
+yarn test:unit --watch
+yarn lint
 ```
 
-### Run your tests
+### Deployment
 ```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
+yarn build
 ```
 
-### Run your unit tests
-```
-yarn run test:unit
-```
+## Changelog
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 0.1.0
+
+* Added support for converting JSON to PHP
+* 
