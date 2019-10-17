@@ -5,6 +5,8 @@ Json2Php is a VueJS application which simulates the json_decode PHP function for
 
 It even preserves the order of the elements in JSON objects!
 
+Use it at https://json2php.netlify.com
+
 ## Project setup
 ```
 yarn install
