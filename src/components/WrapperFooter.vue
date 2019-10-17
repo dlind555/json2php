@@ -10,12 +10,14 @@
           @click="toggleShow('showPP')"
         >
           Privacy Policy
+          <span :class="{ expanded: showPP }">&rsaquo;</span>
         </li>
         <li
           class="inline-block float-right cursor-pointer mr-3 h-16 py-4"
           @click="toggleShow('showTC')"
         >
           Terms and Conditions
+          <span :class="{ expanded: showTC }">&rsaquo;</span>
         </li>
       </ul>
 
@@ -71,4 +73,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+span.expanded {
+  transform: translate(-0.25rem, 0.125rem) rotate(-90deg);
+  display: inline-block;
+}
+</style>
