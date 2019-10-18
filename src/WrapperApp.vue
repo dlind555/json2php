@@ -1,6 +1,8 @@
 <template>
   <div>
-    <App @click.native="closePopups" class="min-h-screen pb-20" />
+    <div @click.stop="closePopups" class="w-full">
+      <App class="min-h-screen pb-20" />
+    </div>
     <WrapperFooter />
   </div>
 </template>
@@ -16,9 +18,11 @@ export default {
     WrapperFooter
   },
   methods: {
-    closePopups($event) {
-      this.$children[1].showPP=false;
-      this.$children[1].showTC=false;
+    closePopups() {
+      // this is fine since the wrapper components are rather small
+      // and tightly coupled anyway
+      this.$children[1].showPP = false;
+      this.$children[1].showTC = false;
     }
   }
 };
