@@ -27,11 +27,10 @@
         </template>
         This is a client-side app and all the conversions are being done locally
         in your browser using Javascript. No user-provided data is being sent to
-        our servers and no website analytics tools are being used. Your IP
-        address and the browser information is available to the server while
-        loading the website, but they are not being stored and are not
-        associated with any personally identifiable information. No cookies are
-        being used.
+        our servers. Your IP address and the browser information is available to
+        the server while loading the website, but they are not being stored and
+        are not associated with any personally identifiable information. No 
+        cookies are being used.
       </WrapperPopup>
 
       <WrapperPopup v-if="showTC">
