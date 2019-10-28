@@ -31,6 +31,26 @@ describe("mutations", () => {
     expect(localState).toEqual(expectedState);
   });
 
+  it("Sets PHPFlag", () => {
+    const localState = Object.assign({}, state);
+
+    mutations.setPHPFlag(localState, true);
+
+    const expectedState = Object.assign({}, state);
+    expectedState.contentIsPHP = true;
+    expect(localState).toEqual(expectedState);
+  });
+
+  it("Sets PHPArrayFlag", () => {
+    const localState = Object.assign({}, state);
+
+    mutations.setPHPArrayFlag(localState, true);
+
+    const expectedState = Object.assign({}, state);
+    expectedState.contentIsPHPArray = true;
+    expect(localState).toEqual(expectedState);
+  });
+
   it("Sets error", () => {
     const localState = Object.assign({}, state);
 

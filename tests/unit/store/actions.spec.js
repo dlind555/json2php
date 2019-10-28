@@ -43,7 +43,9 @@ describe("actions", () => {
       message: "message",
       error: "error",
       contentIsJson: true,
-      contentIsJsonStructure: true
+      contentIsJsonStructure: true,
+      contentIsPHP: true,
+      contentIsPHPArray: true
     });
 
     const store = new Vuex.Store({
@@ -60,7 +62,9 @@ describe("actions", () => {
     const state = Object.assign({}, baseState, {
       error: "error",
       contentIsJson: true,
-      contentIsJsonStructure: true
+      contentIsJsonStructure: true,
+      contentIsPHP: true,
+      contentIsPHPArray: true
     });
 
     const store = new Vuex.Store({
@@ -74,7 +78,9 @@ describe("actions", () => {
     expect(state.message).toBe("Success!");
     expect(state.error).toBe("");
     expect(state.contentIsJson).toBe(false);
-    // this value is not being updated by the action
+    expect(state.contentIsPHP).toBe(false);
+    // these values are not being updated by the action
     expect(state.contentIsJsonStructure).toBe(true);
+    expect(state.contentIsPHPArray).toBe(true);
   });
 });

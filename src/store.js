@@ -8,7 +8,9 @@ export const state = {
   error: "",
   message: "",
   contentIsJson: false,
-  contentIsJsonStructure: false
+  contentIsJsonStructure: false,
+  contentIsPHP: false,
+  contentIsPHPArray: false
 };
 
 export const getters = {
@@ -51,6 +53,12 @@ export const mutations = {
   setJsonStructureFlag(state, flag) {
     state.contentIsJsonStructure = flag;
   },
+  setPHPFlag(state, flag) {
+    state.contentIsPHP = flag;
+  },
+  setPHPArrayFlag(state, flag) {
+    state.contentIsPHPArray = flag;
+  },
   setError(state, error) {
     state.error = error;
   },
@@ -67,6 +75,8 @@ export const actions = {
       commit("setError", "");
       commit("setJsonFlag", false);
       commit("setJsonStructureFlag", false);
+      commit("setPHPFlag", false);
+      commit("setPHPArrayFlag", false);
       return;
     }
     try {
@@ -92,6 +102,7 @@ export const actions = {
     commit("setMessage", data.message);
     commit("setError", "");
     commit("setJsonFlag", false);
+    commit("setPHPFlag", false);
   }
 };
 
