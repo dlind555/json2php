@@ -26,9 +26,9 @@ describe("getters", () => {
     // for contentIsJson flag to be false
     expect(store.getters.statusMessage).toBe("Internal state error");
     state.contentIsJson = true;
-    expect(store.getters.statusMessage).toBe("Content is a JSON object/array");
-    state.contentIsJsonValue = true;
     expect(store.getters.statusMessage).toBe("Content is a JSON value");
+    state.contentIsJsonStructure = true;
+    expect(store.getters.statusMessage).toBe("Content is a JSON object/array");
     state.content = "";
     expect(store.getters.statusMessage).toBe("Content is empty");
     state.error = "Error!";
@@ -46,20 +46,23 @@ describe("getters", () => {
 
     state.error = "error";
     state.contentIsJson = false;
-    state.contentIsJsonValue = true;
+    state.contentIsJsonStructure = false;
     expect(store.getters.canConvert).toBe(false);
-    state.contentIsJsonValue = false;
+    state.contentIsJsonStructure = true;
     expect(store.getters.canConvert).toBe(false);
     state.contentIsJson = true;
-    state.contentIsJsonValue = false;
+    state.contentIsJsonStructure = false;
     expect(store.getters.canConvert).toBe(false);
+    state.contentIsJsonStructure = true;
+    expect(store.getters.canConvert).toBe(false);
+
     state.error = "";
     state.contentIsJson = false;
-    state.contentIsJsonValue = true;
-    expect(store.getters.canConvert).toBe(false);
-    state.contentIsJsonValue = false;
+    state.contentIsJsonStructure = false;
     expect(store.getters.canConvert).toBe(false);
     state.contentIsJson = true;
+    expect(store.getters.canConvert).toBe(false);
+    state.contentIsJsonStructure = true;
     expect(store.getters.canConvert).toBe(true);
   });
 });

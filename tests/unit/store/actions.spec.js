@@ -16,21 +16,21 @@ describe("actions", () => {
     expect(state.content).toBe("_");
     expect(state.message).toBe("");
     expect(state.contentIsJson).toBe(false);
-    expect(state.contentIsJsonValue).toBe(false);
+    expect(state.contentIsJsonStructure).toBe(false);
     expect(state.error).toContain("Unexpected token");
 
     store.dispatch("updateContent", "12345");
     expect(state.content).toBe("12345");
     expect(state.message).toBe("");
     expect(state.contentIsJson).toBe(true);
-    expect(state.contentIsJsonValue).toBe(true);
+    expect(state.contentIsJsonStructure).toBe(false);
     expect(state.error).toBe("");
 
     store.dispatch("updateContent", "[12345]");
     expect(state.content).toBe("[12345]");
     expect(state.message).toBe("");
     expect(state.contentIsJson).toBe(true);
-    expect(state.contentIsJsonValue).toBe(false);
+    expect(state.contentIsJsonStructure).toBe(true);
     expect(state.error).toBe("");
 
     store.dispatch("updateContent", "");
@@ -43,7 +43,7 @@ describe("actions", () => {
       message: "message",
       error: "error",
       contentIsJson: true,
-      contentIsJsonValue: true
+      contentIsJsonStructure: true
     });
 
     const store = new Vuex.Store({
@@ -60,7 +60,7 @@ describe("actions", () => {
     const state = Object.assign({}, baseState, {
       error: "error",
       contentIsJson: true,
-      contentIsJsonValue: true
+      contentIsJsonStructure: true
     });
 
     const store = new Vuex.Store({
@@ -75,6 +75,6 @@ describe("actions", () => {
     expect(state.error).toBe("");
     expect(state.contentIsJson).toBe(false);
     // this value is not being updated by the action
-    expect(state.contentIsJsonValue).toBe(true);
+    expect(state.contentIsJsonStructure).toBe(true);
   });
 });

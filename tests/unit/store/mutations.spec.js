@@ -21,13 +21,13 @@ describe("mutations", () => {
     expect(localState).toEqual(expectedState);
   });
 
-  it("Sets jsonValueFlag", () => {
+  it("Sets jsonStructureFlag", () => {
     const localState = Object.assign({}, state);
 
-    mutations.setJsonValueFlag(localState, true);
+    mutations.setJsonStructureFlag(localState, true);
 
     const expectedState = Object.assign({}, state);
-    expectedState.contentIsJsonValue = true;
+    expectedState.contentIsJsonStructure = true;
     expect(localState).toEqual(expectedState);
   });
 

@@ -8,7 +8,7 @@ export const state = {
   error: "",
   message: "",
   contentIsJson: false,
-  contentIsJsonValue: false
+  contentIsJsonStructure: false
 };
 
 export const getters = {
@@ -23,10 +23,10 @@ export const getters = {
     } else {
       if (state.content === "") {
         return "Content is empty";
-      } else if (state.contentIsJsonValue) {
-        return "Content is a JSON value";
       } else if (state.contentIsJson) {
-        return "Content is a JSON object/array";
+        return state.contentIsJsonStructure
+          ? "Content is a JSON object/array"
+          : "Content is a JSON value";
       } else {
         return "Internal state error";
       }
@@ -36,7 +36,7 @@ export const getters = {
     return (
       !getters.contentHasErrors &&
       state.contentIsJson &&
-      !state.contentIsJsonValue
+      state.contentIsJsonStructure
     );
   }
 };
@@ -48,8 +48,8 @@ export const mutations = {
   setJsonFlag(state, flag) {
     state.contentIsJson = flag;
   },
-  setJsonValueFlag(state, flag) {
-    state.contentIsJsonValue = flag;
+  setJsonStructureFlag(state, flag) {
+    state.contentIsJsonStructure = flag;
   },
   setError(state, error) {
     state.error = error;
@@ -66,7 +66,7 @@ export const actions = {
     if (content === "") {
       commit("setError", "");
       commit("setJsonFlag", false);
-      commit("setJsonValueFlag", false);
+      commit("setJsonStructureFlag", false);
       return;
     }
     try {
@@ -74,14 +74,14 @@ export const actions = {
       commit("setJsonFlag", true);
       commit("setError", "");
       if (decoded instanceof Array || decoded instanceof Object) {
-        commit("setJsonValueFlag", false);
+        commit("setJsonStructureFlag", true);
       } else {
-        commit("setJsonValueFlag", true);
+        commit("setJsonStructureFlag", false);
       }
     } catch (error) {
       commit("setError", error.message);
       commit("setJsonFlag", false);
-      commit("setJsonValueFlag", false);
+      commit("setJsonStructureFlag", false);
     }
   },
   clearContent({ dispatch }) {
