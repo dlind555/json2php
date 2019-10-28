@@ -37,6 +37,38 @@ describe("getters", () => {
     expect(store.getters.statusMessage).toBe("Success!");
   });
 
+  it("Gets canConvertFromPHP flag", () => {
+    const state = Object.assign({}, baseState);
+    const store = new Vuex.Store({
+      state,
+      getters
+    });
+
+    state.contentIsPHP = false;
+    state.contentIsPHPArray = false;
+    expect(store.getters.canConvertFromPHP).toBe(false);
+    state.contentIsPHP = true;
+    expect(store.getters.canConvertFromPHP).toBe(false);
+    state.contentIsPHPArray = true;
+    expect(store.getters.canConvertFromPHP).toBe(true);
+  });
+
+  it("Gets canConvertFromJson flag", () => {
+    const state = Object.assign({}, baseState);
+    const store = new Vuex.Store({
+      state,
+      getters
+    });
+
+    state.contentIsJson = false;
+    state.contentIsJsonStructure = false;
+    expect(store.getters.canConvertFromJson).toBe(false);
+    state.contentIsJson = true;
+    expect(store.getters.canConvertFromJson).toBe(false);
+    state.contentIsJsonStructure = true;
+    expect(store.getters.canConvertFromJson).toBe(true);
+  });
+
   it("Gets canConvert flag", () => {
     const state = Object.assign({}, baseState);
     const store = new Vuex.Store({
@@ -44,25 +76,15 @@ describe("getters", () => {
       getters
     });
 
-    state.error = "error";
-    state.contentIsJson = false;
-    state.contentIsJsonStructure = false;
-    expect(store.getters.canConvert).toBe(false);
-    state.contentIsJsonStructure = true;
     expect(store.getters.canConvert).toBe(false);
     state.contentIsJson = true;
-    state.contentIsJsonStructure = false;
-    expect(store.getters.canConvert).toBe(false);
     state.contentIsJsonStructure = true;
+    expect(store.getters.canConvert).toBe(true);
+    state.contentIsPHP = true;
+    state.contentIsPHPArray = true;
+    // content is both PHP and JSON, no need to convert it
     expect(store.getters.canConvert).toBe(false);
-
-    state.error = "";
     state.contentIsJson = false;
-    state.contentIsJsonStructure = false;
-    expect(store.getters.canConvert).toBe(false);
-    state.contentIsJson = true;
-    expect(store.getters.canConvert).toBe(false);
-    state.contentIsJsonStructure = true;
     expect(store.getters.canConvert).toBe(true);
   });
 });

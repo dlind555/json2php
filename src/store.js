@@ -37,10 +37,15 @@ export const getters = {
   },
   canConvert(state, getters) {
     return (
-      !getters.contentHasErrors &&
-      state.contentIsJson &&
-      state.contentIsJsonStructure
+      (getters.canConvertFromPHP && !getters.canConvertFromJson) ||
+      (!getters.canConvertFromPHP && getters.canConvertFromJson)
     );
+  },
+  canConvertFromPHP(state) {
+    return state.contentIsPHP && state.contentIsPHPArray;
+  },
+  canConvertFromJson(state) {
+    return state.contentIsJson && state.contentIsJsonStructure;
   }
 };
 
@@ -122,7 +127,9 @@ export const actions = {
     commit("setMessage", data.message);
     commit("setError", "");
     commit("setJsonFlag", false);
+    commit("setJsonStructureFlag", false);
     commit("setPHPFlag", false);
+    commit("setPHPArrayFlag", false);
   }
 };
 

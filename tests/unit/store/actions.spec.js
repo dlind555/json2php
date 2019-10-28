@@ -49,8 +49,8 @@ describe("actions", () => {
     expect(state.contentIsPHPArray).toBe(false);
     expect(state.error).toContain("Unexpected token");
 
-    store.dispatch("updateContent", "[\"test\" => \"php\"]");
-    expect(state.content).toBe("[\"test\" => \"php\"]");
+    store.dispatch("updateContent", '["test" => "php"]');
+    expect(state.content).toBe('["test" => "php"]');
     expect(state.message).toBe("");
     expect(state.contentIsJson).toBe(false);
     expect(state.contentIsJsonStructure).toBe(false);
@@ -103,9 +103,8 @@ describe("actions", () => {
     expect(state.message).toBe("Success!");
     expect(state.error).toBe("");
     expect(state.contentIsJson).toBe(false);
+    expect(state.contentIsJsonStructure).toBe(false);
     expect(state.contentIsPHP).toBe(false);
-    // these values are not being updated by the action
-    expect(state.contentIsJsonStructure).toBe(true);
-    expect(state.contentIsPHPArray).toBe(true);
+    expect(state.contentIsPHPArray).toBe(false);
   });
 });
