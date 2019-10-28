@@ -17,13 +17,18 @@ describe("actions", () => {
     expect(state.message).toBe("");
     expect(state.contentIsJson).toBe(false);
     expect(state.contentIsJsonStructure).toBe(false);
+    expect(state.contentIsPHP).toBe(false);
+    expect(state.contentIsPHPArray).toBe(false);
     expect(state.error).toContain("Unexpected token");
+    expect(state.error).toContain("Parse Error");
 
     store.dispatch("updateContent", "12345");
     expect(state.content).toBe("12345");
     expect(state.message).toBe("");
     expect(state.contentIsJson).toBe(true);
     expect(state.contentIsJsonStructure).toBe(false);
+    expect(state.contentIsPHP).toBe(true);
+    expect(state.contentIsPHPArray).toBe(false);
     expect(state.error).toBe("");
 
     store.dispatch("updateContent", "[12345]");
@@ -31,7 +36,27 @@ describe("actions", () => {
     expect(state.message).toBe("");
     expect(state.contentIsJson).toBe(true);
     expect(state.contentIsJsonStructure).toBe(true);
+    expect(state.contentIsPHP).toBe(true);
+    expect(state.contentIsPHPArray).toBe(true);
     expect(state.error).toBe("");
+
+    store.dispatch("updateContent", "$a = 5;");
+    expect(state.content).toBe("$a = 5;");
+    expect(state.message).toBe("");
+    expect(state.contentIsJson).toBe(false);
+    expect(state.contentIsJsonStructure).toBe(false);
+    expect(state.contentIsPHP).toBe(true);
+    expect(state.contentIsPHPArray).toBe(false);
+    expect(state.error).toContain("Unexpected token");
+
+    store.dispatch("updateContent", "[\"test\" => \"php\"]");
+    expect(state.content).toBe("[\"test\" => \"php\"]");
+    expect(state.message).toBe("");
+    expect(state.contentIsJson).toBe(false);
+    expect(state.contentIsJsonStructure).toBe(false);
+    expect(state.contentIsPHP).toBe(true);
+    expect(state.contentIsPHPArray).toBe(true);
+    expect(state.error).toContain("Unexpected token");
 
     store.dispatch("updateContent", "");
     expect(state).toEqual(baseState);
