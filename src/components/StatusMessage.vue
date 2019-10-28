@@ -4,7 +4,10 @@
     :class="statusStyle"
     role="alert"
   >
-    <span class="block sm:inline">{{ statusMessage }}</span>
+    <span
+      class="block sm:inline"
+      v-html="$options.filters.nl2br(statusMessage)"
+    ></span>
   </div>
 </template>
 
@@ -13,6 +16,14 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "StatusMessage",
+  filters: {
+    nl2br: function(value) {
+      if (typeof value === "undefined" || value === null) {
+        return "";
+      }
+      return (value + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
+    }
+  },
   computed: {
     ...mapGetters(["contentHasErrors", "statusMessage"]),
     statusStyle() {
