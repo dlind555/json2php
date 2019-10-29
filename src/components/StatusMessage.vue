@@ -25,9 +25,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["contentHasErrors", "statusMessage"]),
+    ...mapGetters(["contentHasErrors", "canConvert", "statusMessage"]),
     statusStyle() {
-      return this.contentHasErrors
+      return this.contentHasErrors && !this.canConvert
         ? ["bg-red-300", "border-red-400", "text-red-700"]
         : ["bg-blue-100", "border-blue-200", "text-blue-600"];
     }

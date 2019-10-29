@@ -22,16 +22,39 @@ describe("getters", () => {
     });
 
     state.content = "{}";
-    // with non-empty content and no json parsing error it shouldn't be possible
-    // for contentIsJson flag to be false
+    // with non-empty content and no parsing errors it shouldn't be possible
+    // for contentIsJson/contentIsPHP flags to be false
     expect(store.getters.statusMessage).toBe("Internal state error");
     state.contentIsJson = true;
-    expect(store.getters.statusMessage).toBe("Content is a JSON value");
+    state.error = "Error";
+    expect(store.getters.statusMessage).toBe("Content is a JSON value\nError");
+    state.contentIsPHP = true;
+    expect(store.getters.statusMessage).toBe(
+      "Content could be both a JSON value or a PHP statement"
+    );
+    state.contentIsJson = false;
+    expect(store.getters.statusMessage).toBe(
+      "Error\nContent is valid PHP code"
+    );
+    state.contentIsJson = true;
     state.contentIsJsonStructure = true;
+    state.contentIsPHPArray = true;
+    expect(store.getters.statusMessage).toBe(
+      "Content is both a PHP array and a JSON array, no need to convert it"
+    );
+    state.contentIsPHPArray = false;
     expect(store.getters.statusMessage).toBe("Content is a JSON object/array");
+    state.contentIsPHPArray = true;
+    state.contentIsJsonStructure = false;
+    expect(store.getters.statusMessage).toBe("Content is a PHP array");
     state.content = "";
     expect(store.getters.statusMessage).toBe("Content is empty");
     state.error = "Error!";
+    state.content = "{}";
+    state.contentIsPHP = false;
+    state.contentIsPHPArray = false;
+    state.contentIsJson = false;
+    state.contentIsJsonStructure = false;
     expect(store.getters.statusMessage).toBe("Error!");
     state.message = "Success!";
     expect(store.getters.statusMessage).toBe("Success!");

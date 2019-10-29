@@ -21,19 +21,31 @@ export const getters = {
   statusMessage(state, getters) {
     if (state.message !== "") {
       return state.message;
-    } else if (getters.contentHasErrors) {
-      return state.error;
-    } else {
-      if (state.content === "") {
-        return "Content is empty";
-      } else if (state.contentIsJson) {
-        return state.contentIsJsonStructure
-          ? "Content is a JSON object/array"
-          : "Content is a JSON value";
-      } else {
-        return "Internal state error";
-      }
     }
+    if (state.content === "") {
+      return "Content is empty";
+    }
+    if (getters.canConvert) {
+      return getters.canConvertFromPHP
+        ? "Content is a PHP array"
+        : "Content is a JSON object/array";
+    }
+    if (getters.canConvertFromJson && getters.canConvertFromPHP) {
+      return "Content is both a PHP array and a JSON array, no need to convert it";
+    }
+    if (state.contentIsJson && !state.contentIsPHP) {
+      return "Content is a JSON value\n" + state.error;
+    }
+    if (!state.contentIsJson && state.contentIsPHP) {
+      return state.error + "\nContent is valid PHP code";
+    }
+    if (state.contentIsJson && state.contentIsPHP) {
+      return "Content could be both a JSON value or a PHP statement";
+    }
+    if (getters.contentHasErrors) {
+      return state.error;
+    }
+    return "Internal state error";
   },
   canConvert(state, getters) {
     return (
