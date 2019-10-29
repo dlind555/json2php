@@ -40,6 +40,15 @@ describe("actions", () => {
     expect(state.contentIsPHPArray).toBe(true);
     expect(state.error).toBe("");
 
+    store.dispatch("updateContent", '{"key":12345}');
+    expect(state.content).toBe('{"key":12345}');
+    expect(state.message).toBe("");
+    expect(state.contentIsJson).toBe(true);
+    expect(state.contentIsJsonStructure).toBe(true);
+    expect(state.contentIsPHP).toBe(false);
+    expect(state.contentIsPHPArray).toBe(false);
+    expect(state.error).toContain("Parse Error");
+
     store.dispatch("updateContent", "$a = 5;");
     expect(state.content).toBe("$a = 5;");
     expect(state.message).toBe("");
