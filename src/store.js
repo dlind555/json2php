@@ -129,15 +129,6 @@ export const actions = {
   },
   clearContent({ dispatch }) {
     dispatch("updateContent", "");
-  },
-  resetContent({ commit }, data) {
-    commit("setContent", data.content);
-    commit("setMessage", data.message);
-    commit("setError", "");
-    commit("setJsonFlag", false);
-    commit("setJsonStructureFlag", false);
-    commit("setPHPFlag", false);
-    commit("setPHPArrayFlag", false);
   }
 };
 

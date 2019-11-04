@@ -91,29 +91,4 @@ describe("actions", () => {
     store.dispatch("clearContent");
     expect(state).toEqual(baseState);
   });
-
-  it("Resets content", () => {
-    const state = Object.assign({}, baseState, {
-      error: "error",
-      contentIsJson: true,
-      contentIsJsonStructure: true,
-      contentIsPHP: true,
-      contentIsPHPArray: true
-    });
-
-    const store = new Vuex.Store({
-      state,
-      mutations,
-      actions
-    });
-
-    store.dispatch("resetContent", { content: "Decoded", message: "Success!" });
-    expect(state.content).toBe("Decoded");
-    expect(state.message).toBe("Success!");
-    expect(state.error).toBe("");
-    expect(state.contentIsJson).toBe(false);
-    expect(state.contentIsJsonStructure).toBe(false);
-    expect(state.contentIsPHP).toBe(false);
-    expect(state.contentIsPHPArray).toBe(false);
-  });
 });
