@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import convertPhpToJson from "@/library/php2json";
 
 Vue.use(Vuex);
 
@@ -8,7 +9,9 @@ export const state = {
   error: "",
   message: "",
   contentIsJson: false,
-  contentIsJsonValue: false
+  contentIsJsonStructure: false,
+  contentIsPHP: false,
+  contentIsPHPArray: false
 };
 
 export const getters = {
@@ -18,26 +21,43 @@ export const getters = {
   statusMessage(state, getters) {
     if (state.message !== "") {
       return state.message;
-    } else if (getters.contentHasErrors) {
-      return state.error;
-    } else {
-      if (state.content === "") {
-        return "Content is empty";
-      } else if (state.contentIsJsonValue) {
-        return "Content is a JSON value";
-      } else if (state.contentIsJson) {
-        return "Content is a JSON object/array";
-      } else {
-        return "Internal state error";
-      }
     }
+    if (state.content === "") {
+      return "Content is empty";
+    }
+    if (getters.canConvert) {
+      return getters.canConvertFromPHP
+        ? "Content is a PHP array"
+        : "Content is a JSON object/array";
+    }
+    if (getters.canConvertFromJson && getters.canConvertFromPHP) {
+      return "Content is both a PHP array and a JSON array, no need to convert it";
+    }
+    if (state.contentIsJson && !state.contentIsPHP) {
+      return "Content is a JSON value\n" + state.error;
+    }
+    if (!state.contentIsJson && state.contentIsPHP) {
+      return state.error + "\nContent is valid PHP code";
+    }
+    if (state.contentIsJson && state.contentIsPHP) {
+      return "Content could be both a JSON value or a PHP statement";
+    }
+    if (getters.contentHasErrors) {
+      return state.error;
+    }
+    return "Internal state error";
   },
   canConvert(state, getters) {
     return (
-      !getters.contentHasErrors &&
-      state.contentIsJson &&
-      !state.contentIsJsonValue
+      (getters.canConvertFromPHP && !getters.canConvertFromJson) ||
+      (!getters.canConvertFromPHP && getters.canConvertFromJson)
     );
+  },
+  canConvertFromPHP(state) {
+    return state.contentIsPHP && state.contentIsPHPArray;
+  },
+  canConvertFromJson(state) {
+    return state.contentIsJson && state.contentIsJsonStructure;
   }
 };
 
@@ -48,8 +68,14 @@ export const mutations = {
   setJsonFlag(state, flag) {
     state.contentIsJson = flag;
   },
-  setJsonValueFlag(state, flag) {
-    state.contentIsJsonValue = flag;
+  setJsonStructureFlag(state, flag) {
+    state.contentIsJsonStructure = flag;
+  },
+  setPHPFlag(state, flag) {
+    state.contentIsPHP = flag;
+  },
+  setPHPArrayFlag(state, flag) {
+    state.contentIsPHPArray = flag;
   },
   setError(state, error) {
     state.error = error;
@@ -66,32 +92,43 @@ export const actions = {
     if (content === "") {
       commit("setError", "");
       commit("setJsonFlag", false);
-      commit("setJsonValueFlag", false);
+      commit("setJsonStructureFlag", false);
+      commit("setPHPFlag", false);
+      commit("setPHPArrayFlag", false);
       return;
     }
+    let errors = [];
     try {
       let decoded = JSON.parse(content);
       commit("setJsonFlag", true);
-      commit("setError", "");
       if (decoded instanceof Array || decoded instanceof Object) {
-        commit("setJsonValueFlag", false);
+        commit("setJsonStructureFlag", true);
       } else {
-        commit("setJsonValueFlag", true);
+        commit("setJsonStructureFlag", false);
       }
     } catch (error) {
-      commit("setError", error.message);
+      errors.push(error.message);
       commit("setJsonFlag", false);
-      commit("setJsonValueFlag", false);
+      commit("setJsonStructureFlag", false);
     }
+    try {
+      convertPhpToJson(content);
+      commit("setPHPFlag", true);
+      commit("setPHPArrayFlag", true);
+    } catch (error) {
+      if (error instanceof TypeError) {
+        commit("setPHPFlag", true);
+        commit("setPHPArrayFlag", false);
+      } else {
+        errors.push("PHP Parser: " + error.message);
+        commit("setPHPFlag", false);
+        commit("setPHPArrayFlag", false);
+      }
+    }
+    commit("setError", errors.join("\n"));
   },
   clearContent({ dispatch }) {
     dispatch("updateContent", "");
-  },
-  resetContent({ commit }, data) {
-    commit("setContent", data.content);
-    commit("setMessage", data.message);
-    commit("setError", "");
-    commit("setJsonFlag", false);
   }
 };
 
