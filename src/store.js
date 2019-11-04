@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import phpParser from "php-parser";
+import convertPhpToJson from "@/library/php2json";
 
 Vue.use(Vuex);
 
@@ -112,22 +112,18 @@ export const actions = {
       commit("setJsonStructureFlag", false);
     }
     try {
-      let ast = phpParser.parseEval(content);
+      convertPhpToJson(content);
       commit("setPHPFlag", true);
-      if (
-        ast.children &&
-        ast.children.length == 1 &&
-        ast.children[0].kind == "expressionstatement" &&
-        ast.children[0].expression.kind == "array"
-      ) {
-        commit("setPHPArrayFlag", true);
+      commit("setPHPArrayFlag", true);
+    } catch (error) {
+      if (error instanceof TypeError) {
+        commit("setPHPFlag", true);
+        commit("setPHPArrayFlag", false);
       } else {
+        errors.push("PHP Parser: " + error.message);
+        commit("setPHPFlag", false);
         commit("setPHPArrayFlag", false);
       }
-    } catch (error) {
-      errors.push("PHP Parser: " + error.message);
-      commit("setPHPFlag", false);
-      commit("setPHPArrayFlag", false);
     }
     commit("setError", errors.join("\n"));
   },
