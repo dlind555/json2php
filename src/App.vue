@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="lg:max-w-5xl p-8 mx-auto text-gray-800">
     <BaseDescription />
+    <SettingsArea />
     <ContentArea />
     <StatusMessage />
     <div class="clearfix">
@@ -13,6 +14,7 @@
 <script>
 import "@/assets/css/main.css";
 import BaseDescription from "./components/BaseDescription.vue";
+import SettingsArea from "./components/SettingsArea.vue";
 import ContentArea from "./components/ContentArea.vue";
 import StatusMessage from "./components/StatusMessage.vue";
 import ButtonConvert from "./components/ButtonConvert.vue";
@@ -22,6 +24,7 @@ export default {
   name: "app",
   components: {
     BaseDescription,
+    SettingsArea,
     ContentArea,
     StatusMessage,
     ButtonConvert,
