@@ -35,13 +35,18 @@ export default {
     convert() {
       if (this.canConvertFromJson) {
         let decoded = jsonParseOrdered(this.content);
-        let phpString = convertJsonToPhp(decoded, this.settings.compactMode);
+        let phpString = convertJsonToPhp(
+          decoded,
+          this.settings.compactMode,
+          this.settings.alignValues
+        );
         this.$store.dispatch("updateContent", phpString);
         this.$store.commit("setMessage", "Converted to PHP!");
       } else {
         let jsonString = convertPhpToJson(
           this.content,
-          this.settings.compactMode
+          this.settings.compactMode,
+          this.settings.alignValues
         );
         this.$store.dispatch("updateContent", jsonString);
         this.$store.commit("setMessage", "Converted to JSON!");
