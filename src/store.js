@@ -11,7 +11,11 @@ export const state = {
   contentIsJson: false,
   contentIsJsonStructure: false,
   contentIsPHP: false,
-  contentIsPHPArray: false
+  contentIsPHPArray: false,
+  settings: {
+    alignValues: true,
+    compactMode: false
+  }
 };
 
 export const getters = {
@@ -82,6 +86,9 @@ export const mutations = {
   },
   setMessage(state, message) {
     state.message = message;
+  },
+  setSettings(state, settings) {
+    state.settings = JSON.parse(JSON.stringify(settings));
   }
 };
 

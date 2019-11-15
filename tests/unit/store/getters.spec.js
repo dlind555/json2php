@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 describe("getters", () => {
   it("Gets errors flag", () => {
-    const state = Object.assign({}, baseState);
+    const state = JSON.parse(JSON.stringify(baseState));
     const store = new Vuex.Store({
       state,
       getters
@@ -15,7 +15,7 @@ describe("getters", () => {
   });
 
   it("Gets the message", () => {
-    const state = Object.assign({}, baseState);
+    const state = JSON.parse(JSON.stringify(baseState));
     const store = new Vuex.Store({
       state,
       getters
@@ -61,7 +61,7 @@ describe("getters", () => {
   });
 
   it("Gets canConvertFromPHP flag", () => {
-    const state = Object.assign({}, baseState);
+    const state = JSON.parse(JSON.stringify(baseState));
     const store = new Vuex.Store({
       state,
       getters
@@ -77,7 +77,7 @@ describe("getters", () => {
   });
 
   it("Gets canConvertFromJson flag", () => {
-    const state = Object.assign({}, baseState);
+    const state = JSON.parse(JSON.stringify(baseState));
     const store = new Vuex.Store({
       state,
       getters
@@ -93,7 +93,7 @@ describe("getters", () => {
   });
 
   it("Gets canConvert flag", () => {
-    const state = Object.assign({}, baseState);
+    const state = JSON.parse(JSON.stringify(baseState));
     const store = new Vuex.Store({
       state,
       getters
