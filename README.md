@@ -27,6 +27,12 @@ yarn build
 
 ## Changelog
 
+### 0.3.0
+
+* Added toggles for setting the conversion options
+* Compact mode setting for converting without new lines / tabs
+* Align Array Values setting for aligning all array values horizontally
+
 ### 0.2.0
 
 * Added support for converting PHP to JSON
