@@ -1,7 +1,7 @@
 <template>
   <div class="my-4 border rounded overflow-hidden">
     <textarea
-      class="w-full h-48 px-4 py-1 overflow-auto resize-y"
+      class="w-full h-48 px-4 py-1 overflow-auto resize-y font-mono"
       :value="content"
       @input="updateContent"
     ></textarea>
