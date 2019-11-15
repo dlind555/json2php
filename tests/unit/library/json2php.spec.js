@@ -88,28 +88,28 @@ describe("JsonToPhp", () => {
   });
 
   it("Converts simple array in compact mode", () => {
-    let input = '[1,"test",false,true,null]';
+    let input = '[1, "test", false, true, null]';
     expect(json2php(jsonParseOrdered(input), true)).toBe(input);
   });
 
   it("Converts an array with nested object in compact mode", () => {
-    let input = '[1,null,{"nested":"value"}]';
+    let input = '[1, null, {"nested":"value"}]';
     expect(json2php(jsonParseOrdered(input), true)).toBe(
-      '[1,null,["nested" => "value"]]'
+      '[1, null, ["nested" => "value"]]'
     );
   });
 
   it("Converts simple object in compact mode", () => {
     let input = '{"a":1,"b":"test","c":false,"d":true,"e":null}';
     expect(json2php(jsonParseOrdered(input), true)).toBe(
-      '["a" => 1,"b" => "test","c" => false,"d" => true,"e" => null]'
+      '["a" => 1, "b" => "test", "c" => false, "d" => true, "e" => null]'
     );
   });
 
   it("Converts an object with nested array in compact mode", () => {
     let input = '{"a":1,"b":[1,2]}';
     expect(json2php(jsonParseOrdered(input), true)).toBe(
-      '["a" => 1,"b" => [1,2]]'
+      '["a" => 1, "b" => [1, 2]]'
     );
   });
 
@@ -133,14 +133,14 @@ describe("JsonToPhp", () => {
   it("Converts simple array", () => {
     let input = '[1,"test",false,true,null]';
     expect(json2php(jsonParseOrdered(input))).toBe(
-      '[\n\t1, \n\t"test", \n\tfalse, \n\ttrue, \n\tnull\n]'
+      '[\n\t1,\n\t"test",\n\tfalse,\n\ttrue,\n\tnull\n]'
     );
   });
 
   it("Converts simple object", () => {
     let input = '{"a":1,"b":"test","c":false,"d":true,"e":null}';
     expect(json2php(jsonParseOrdered(input))).toBe(
-      '[\n\t"a" => 1, \n\t"b" => "test", \n\t"c" => false, \n\t"d" => true, \n\t"e" => null\n]'
+      '[\n\t"a" => 1,\n\t"b" => "test",\n\t"c" => false,\n\t"d" => true,\n\t"e" => null\n]'
     );
   });
 
@@ -155,14 +155,22 @@ describe("JsonToPhp", () => {
   it("Doesn't preserve the object elements order when using the standard JSON.parse function", () => {
     let input = '{"5":"1", "4":"2", "2":"3", "1":"4", "3":"5"}';
     expect(json2php(JSON.parse(input), true)).toBe(
-      '["1" => "4","2" => "3","3" => "5","4" => "2","5" => "1"]'
+      '["1" => "4", "2" => "3", "3" => "5", "4" => "2", "5" => "1"]'
     );
   });
 
   it("Preserves the object elements order when using jsonParseOrdered function", () => {
     let input = '{"5":"1", "4":"2", "2":"3", "1":"4", "3":"5"}';
     expect(json2php(jsonParseOrdered(input), true)).toBe(
-      '["5" => "1","4" => "2","2" => "3","1" => "4","3" => "5"]'
+      '["5" => "1", "4" => "2", "2" => "3", "1" => "4", "3" => "5"]'
+    );
+  });
+
+  it("Aligns the array values", () => {
+    let input = '{"o":1,"tw":2,"thr":3,"four":4}';
+    expect(json2php(jsonParseOrdered(input), false, true)).toBe(
+      '[\n\t"o"    => 1,\n\t"tw"   => 2,\n\t"thr"  => 3,\n\t' +
+        '"four" => 4\n]'
     );
   });
 });

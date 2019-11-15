@@ -1,6 +1,11 @@
-const json2php = function(item, compact = false, nestingLevel = 0) {
+const json2php = function(
+  item,
+  compact = false,
+  alignValues = false,
+  nestingLevel = 0
+) {
   const comma = function() {
-    return compact ? "," : ", ";
+    return compact ? ", " : ",";
   };
   const whitespace = function(level) {
     return compact ? "" : "\t".repeat(level);
@@ -29,7 +34,18 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
       .replace(/\n/g, "\\n")
       .replace(/\t/g, "\\t");
   };
+  const calculateArrayPadding = function(items) {
+    if (compact || !alignValues) {
+      return 0;
+    }
+    let maxLength = 0;
+    items.forEach(function(value, key) {
+      maxLength = Math.max(maxLength, key.length);
+    });
+    return maxLength;
+  };
   let result;
+  let arrayPadding;
   switch (Object.prototype.toString.call(item)) {
     case "[object Null]":
       result = "null";
@@ -48,7 +64,7 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
       for (let i in item) {
         result.push(
           whitespace(nestingLevel + 1) +
-            json2php(item[i], compact, nestingLevel + 1)
+            json2php(item[i], compact, alignValues, nestingLevel + 1)
         );
       }
       result = wrapObjectOrArray(result);
@@ -61,20 +77,21 @@ const json2php = function(item, compact = false, nestingLevel = 0) {
             '"' +
             escapeString(i) +
             '" => ' +
-            json2php(item[i], compact, nestingLevel + 1)
+            json2php(item[i], compact, alignValues, nestingLevel + 1)
         );
       }
       result = wrapObjectOrArray(result);
       break;
     case "[object Map]":
       result = [];
+      arrayPadding = calculateArrayPadding(item);
       item.forEach(function(value, key) {
         result.push(
           whitespace(nestingLevel + 1) +
             '"' +
-            escapeString(key) +
-            '" => ' +
-            json2php(value, compact, nestingLevel + 1)
+            (escapeString(key) + '"').padEnd(arrayPadding + 1) +
+            " => " +
+            json2php(value, compact, alignValues, nestingLevel + 1)
         );
       });
       result = wrapObjectOrArray(result);
