@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 describe("actions", () => {
   it("Updates content", () => {
-    const state = Object.assign({}, baseState);
+    const state = JSON.parse(JSON.stringify(baseState));
     state.message = "Success";
 
     const store = new Vuex.Store({
@@ -72,7 +72,7 @@ describe("actions", () => {
   });
 
   it("Clears content", () => {
-    const state = Object.assign({}, baseState, {
+    const state = Object.assign(JSON.parse(JSON.stringify(baseState)), {
       content: "[]",
       message: "message",
       error: "error",
