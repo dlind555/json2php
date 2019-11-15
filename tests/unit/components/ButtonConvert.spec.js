@@ -42,7 +42,11 @@ describe("ButtonConvert.vue", () => {
     const actions = { updateContent };
     const mutations = { setMessage };
     const state = {
-      content: "[]"
+      content: "[]",
+      settings: {
+        compactMode: true,
+        alignValues: true
+      }
     };
     const store = new Vuex.Store({
       state,
@@ -68,7 +72,11 @@ describe("ButtonConvert.vue", () => {
     const actions = { updateContent };
     const mutations = { setMessage };
     const state = {
-      content: "[]"
+      content: "[]",
+      settings: {
+        compactMode: true,
+        alignValues: true
+      }
     };
     const store = new Vuex.Store({
       state,

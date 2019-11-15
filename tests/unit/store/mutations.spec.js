@@ -70,4 +70,18 @@ describe("mutations", () => {
     expectedState.message = "message";
     expect(localState).toEqual(expectedState);
   });
+
+  it("Sets settings", () => {
+    const localState = JSON.parse(JSON.stringify(state));
+
+    mutations.setSettings(localState, {
+      alignValues: false,
+      compactMode: true
+    });
+
+    const expectedState = JSON.parse(JSON.stringify(state));
+    expectedState.settings.alignValues = false;
+    expectedState.settings.compactMode = true;
+    expect(localState).toEqual(expectedState);
+  });
 });

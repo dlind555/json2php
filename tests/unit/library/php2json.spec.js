@@ -123,8 +123,7 @@ describe("PhpToJson", () => {
   it("Aligns the array values", () => {
     let input = '["o"=>1,"tw"=>2,"thr"=>3,"four"=>4]';
     expect(php2json(input, false, true)).toBe(
-      '{\n\t"o"    : 1,\n\t"tw"   : 2,\n\t"thr"  : 3,\n\t' +
-        '"four" : 4\n}'
+      '{\n\t"o"    : 1,\n\t"tw"   : 2,\n\t"thr"  : 3,\n\t' + '"four" : 4\n}'
     );
-  });  
+  });
 });
