@@ -1,8 +1,8 @@
 import phpParser from "php-parser";
 
-const php2json = function(content, compact = false) {
+const php2json = function(content, compact = false, alignValues = false) {
   const comma = function() {
-    return compact ? "," : ", ";
+    return compact ? ", " : ",";
   };
   const whitespace = function(level) {
     return compact ? "" : "\t".repeat(level);
@@ -42,11 +42,22 @@ const php2json = function(content, compact = false) {
     }
     return item.kind;
   };
+  const calculateArrayPadding = function(items) {
+    if (compact || !alignValues) {
+      return 0;
+    }
+    let maxLength = 0;
+    for (let i in items) {
+      maxLength = Math.max(maxLength, items[i][0].length);
+    }
+    return maxLength;
+  };
   const convertExpression = function(item, compact, nestingLevel = 0) {
     let result;
     let numericKey = 0;
     let key = "";
     let value = null;
+    let arrayPadding = 0;
     switch (getItemType(item)) {
       case "identifier":
         if (item.name.name === "null") {
@@ -101,13 +112,16 @@ const php2json = function(content, compact = false) {
             numericKey++;
             value = item.items[i];
           }
-          result.push(
+          result.push([key, value]);
+        }
+        arrayPadding = calculateArrayPadding(result);
+        for (let i in result) {
+          result[i] =
             whitespace(nestingLevel + 1) +
-              '"' +
-              escapeString(key) +
-              '": ' +
-              convertExpression(value, compact, nestingLevel + 1)
-          );
+            '"' +
+            (escapeString(result[i][0]) + '"').padEnd(arrayPadding + 2) +
+            ": " +
+            convertExpression(result[i][1], compact, nestingLevel + 1);
         }
         result = wrapObjectOrArray(result, true, nestingLevel);
         break;
