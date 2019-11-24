@@ -12,13 +12,14 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import convertJsonToPhp from "@/library/json2php";
+import convertPhpToJson from "@/library/php2json";
 import jsonParseOrdered from "@/library/jsonParseOrdered";
 
 export default {
   name: "ButtonConvert",
   computed: {
-    ...mapState(["content"]),
-    ...mapGetters(["canConvert"]),
+    ...mapState(["content", "settings"]),
+    ...mapGetters(["canConvert", "canConvertFromJson"]),
     buttonStyle() {
       return this.canConvert
         ? ["bg-blue-500", "hover:bg-blue-700", "border-blue-700"]
@@ -32,12 +33,24 @@ export default {
   },
   methods: {
     convert() {
-      let decoded = jsonParseOrdered(this.content);
-      let phpString = convertJsonToPhp(decoded);
-      this.$store.dispatch("resetContent", {
-        content: phpString,
-        message: "Converted to PHP!"
-      });
+      if (this.canConvertFromJson) {
+        let decoded = jsonParseOrdered(this.content);
+        let phpString = convertJsonToPhp(
+          decoded,
+          this.settings.compactMode,
+          this.settings.alignValues
+        );
+        this.$store.dispatch("updateContent", phpString);
+        this.$store.commit("setMessage", "Converted to PHP!");
+      } else {
+        let jsonString = convertPhpToJson(
+          this.content,
+          this.settings.compactMode,
+          this.settings.alignValues
+        );
+        this.$store.dispatch("updateContent", jsonString);
+        this.$store.commit("setMessage", "Converted to JSON!");
+      }
     }
   }
 };

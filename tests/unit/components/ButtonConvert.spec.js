@@ -32,24 +32,63 @@ describe("ButtonConvert.vue", () => {
     expect(button.element.className).toContain("cursor-not-allowed");
   });
 
-  it("Converts content on button click", () => {
+  it("Converts content from JSON on button click", () => {
     const getters = {
-      canConvert: () => true
+      canConvert: () => true,
+      canConvertFromJson: () => true
     };
-    const actions = {
-      resetContent: jest.fn()
-    };
+    const updateContent = jest.fn();
+    const setMessage = jest.fn();
+    const actions = { updateContent };
+    const mutations = { setMessage };
     const state = {
-      content: "[]"
+      content: "[]",
+      settings: {
+        compactMode: true,
+        alignValues: true
+      }
     };
     const store = new Vuex.Store({
       state,
       getters,
+      mutations,
       actions
     });
     const wrapper = shallowMount(ButtonConvert, { store, localVue });
     const button = wrapper.find("button");
     button.trigger("click");
-    expect(actions.resetContent).toHaveBeenCalled();
+    expect(updateContent.mock.calls.length).toBe(1);
+    expect(setMessage.mock.calls.length).toBe(1);
+    expect(setMessage.mock.calls[0][1]).toBe("Converted to PHP!");
+  });
+
+  it("Converts content from PHP on button click", () => {
+    const getters = {
+      canConvert: () => true,
+      canConvertFromJson: () => false
+    };
+    const updateContent = jest.fn();
+    const setMessage = jest.fn();
+    const actions = { updateContent };
+    const mutations = { setMessage };
+    const state = {
+      content: "[]",
+      settings: {
+        compactMode: true,
+        alignValues: true
+      }
+    };
+    const store = new Vuex.Store({
+      state,
+      getters,
+      mutations,
+      actions
+    });
+    const wrapper = shallowMount(ButtonConvert, { store, localVue });
+    const button = wrapper.find("button");
+    button.trigger("click");
+    expect(updateContent.mock.calls.length).toBe(1);
+    expect(setMessage.mock.calls.length).toBe(1);
+    expect(setMessage.mock.calls[0][1]).toBe("Converted to JSON!");
   });
 });
